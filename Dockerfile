@@ -9,12 +9,10 @@ RUN apk add --no-cache libstdc++ && \
         g++ gfortran musl-dev \
         python3-dev && \
     ln -s locale.h /usr/include/xlocale.h && \
-    pip install cython && \
     pip install numpy && \
     pip install pandas && \
     pip install scipy && \
     pip install scikit-learn && \
-    pip uninstall --yes cython && \
     rm /usr/include/xlocale.h && \
     rm -r /root/.cache && \
     apk del .build-dependencies
