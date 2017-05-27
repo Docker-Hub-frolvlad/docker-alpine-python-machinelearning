@@ -1,9 +1,6 @@
 FROM frolvlad/alpine-python3
 
-RUN apk add --no-cache libstdc++ && \
-    apk add --no-cache \
-        --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
-        lapack-dev && \
+RUN apk add --no-cache libstdc++ lapack-dev && \
     apk add --no-cache \
         --virtual=.build-dependencies \
         g++ gfortran musl-dev \
@@ -13,6 +10,7 @@ RUN apk add --no-cache libstdc++ && \
     pip install pandas && \
     pip install scipy && \
     pip install scikit-learn && \
+    find /usr/lib/python3.*/ -name 'tests' -exec rm -r '{}' + && \
     rm /usr/include/xlocale.h && \
     rm -r /root/.cache && \
     apk del .build-dependencies
