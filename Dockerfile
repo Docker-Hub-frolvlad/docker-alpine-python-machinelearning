@@ -3,7 +3,7 @@ FROM frolvlad/alpine-python3
 RUN apk add --no-cache \
         --virtual=.build-dependencies \
         g++ gfortran file binutils \
-        musl-dev python3-dev openblas-dev && \
+        musl-dev python3-dev cython openblas-dev && \
     apk add libstdc++ openblas && \
     \
     ln -s locale.h /usr/include/xlocale.h && \
