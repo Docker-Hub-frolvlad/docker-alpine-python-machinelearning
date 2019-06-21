@@ -26,12 +26,10 @@ RUN cd /tmp && \
     apk add --no-cache \
         --virtual=.build-dependencies \
         gcc make file binutils \
-        musl-dev python3-dev gmp-dev suitesparse-dev openblas-dev && \
+        musl-dev python3-dev cython gmp-dev suitesparse-dev openblas-dev && \
     apk add gmp suitesparse && \
     \
-    pip install cython && \
     pip install pycddlib && \
-    pip uninstall --yes cython && \
     \
     wget "ftp://ftp.gnu.org/gnu/glpk/glpk-4.65.tar.gz" && \
     tar xzf "glpk-4.65.tar.gz" && \
