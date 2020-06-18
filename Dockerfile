@@ -13,7 +13,7 @@ RUN apk add --no-cache \
     \
     # scipy 1.4.x releases are broken on Alpine due to: https://github.com/scipy/scipy/issues/11319
     #pip install --disable-pip-version-check --no-build-isolation scipy && \
-    apk add --no-cache --virtual=.build-dependencies-scipy-patch wget && \
+    apk add --no-cache --virtual=.build-dependencies-scipy-patch patch && \
     cd /tmp && \
     SCIPY_VERSION=1.4.1 && \
     wget "https://github.com/scipy/scipy/releases/download/v$SCIPY_VERSION/scipy-$SCIPY_VERSION.tar.xz" && \
