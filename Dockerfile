@@ -3,26 +3,16 @@ FROM frolvlad/alpine-python3
 RUN apk add --no-cache \
         --virtual=.build-dependencies \
         g++ gfortran file binutils \
-        musl-dev python3-dev cython openblas-dev lapack-dev && \
+        musl-dev python3-dev openblas-dev lapack-dev && \
     apk add libstdc++ openblas lapack && \
     \
     ln -s locale.h /usr/include/xlocale.h && \
-    \
+    pip install --disable-pip-version-check --no-build-isolation cython && \
     pip install --disable-pip-version-check --no-build-isolation numpy && \
     pip install --disable-pip-version-check --no-build-isolation pandas && \
-    \
-    # scipy 1.4.x releases are broken on Alpine due to: https://github.com/scipy/scipy/issues/11319
-    #pip install --disable-pip-version-check --no-build-isolation scipy && \
-    apk add --no-cache --virtual=.build-dependencies-scipy-patch patch && \
-    cd /tmp && \
-    SCIPY_VERSION=1.4.1 && \
-    wget "https://github.com/scipy/scipy/releases/download/v$SCIPY_VERSION/scipy-$SCIPY_VERSION.tar.xz" && \
-    tar -xJf "scipy-$SCIPY_VERSION.tar.xz" && \
-    (cd "scipy-$SCIPY_VERSION" && wget https://patch-diff.githubusercontent.com/raw/scipy/scipy/pull/11320.patch -O - | patch -p1) && \
-    pip install --disable-pip-version-check --no-build-isolation "/tmp/scipy-$SCIPY_VERSION/" && \
-    rm -rf /tmp/* && \
-    apk del .build-dependencies-scipy-patch && \
-    \
+    pip install --disable-pip-version-check --no-build-isolation meson-python pythran && \
+    pip install --disable-pip-version-check --no-build-isolation pybind11 && \
+    pip install --disable-pip-version-check --no-build-isolation scipy && \
     pip install --disable-pip-version-check --no-build-isolation scikit-learn && \
     \
     rm -r /root/.cache && \
@@ -43,16 +33,35 @@ RUN cd /tmp && \
     \
     pip install --disable-pip-version-check --no-build-isolation pycddlib && \
     \
-    wget "ftp://ftp.gnu.org/gnu/glpk/glpk-4.65.tar.gz" && \
-    tar xzf "glpk-4.65.tar.gz" && \
-    cd "glpk-4.65" && \
+    wget "ftp://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz" && \
+    tar xzf "glpk-5.0.tar.gz" && \
+    cd "glpk-5.0" && \
     ./configure --disable-static && \
     make -j4 && \
     make install-strip && \
-    CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas CVXOPT_BUILD_GLPK=1 pip install --disable-pip-version-check --no-build-isolation --global-option=build_ext --global-option="-I/usr/include/suitesparse" cvxopt && \
+    \
+    cd /tmp && \  
+    wget https://github.com/cvxopt/cvxopt/archive/refs/tags/1.3.0.zip && \
+    unzip 1.3.0.zip && \
+    cd cvxopt-1.3.0 && \
+    env CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas CVXOPT_BUILD_GLPK=1 CFLAGS="-I/usr/include/suitesparse" python setup.py install && \
     \
     rm -r /root/.cache && \
     find /usr/lib/python3.*/site-packages/ -name '*.so' -print -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \; && \
+    \
+    apk del .build-dependencies && \
+    rm -rf /tmp/*
+
+# Add opencv (cv2)
+RUN apk add --no-cache \
+        --virtual=.build-dependencies \
+        ninja cmake g++ \
+        python3-dev linux-headers && \
+    pip install --disable-pip-version-check --no-build-isolation scikit-build && \
+    pip install --disable-pip-version-check --no-build-isolation opencv-python && \
+    pip uninstall --yes scikit-build && \
+    \
+    rm -r /root/.cache && \
     \
     apk del .build-dependencies && \
     rm -rf /tmp/*
