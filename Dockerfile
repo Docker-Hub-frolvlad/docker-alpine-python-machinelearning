@@ -7,6 +7,8 @@ RUN apk add --no-cache \
     apk add libstdc++ openblas lapack && \
     \
     ln -s locale.h /usr/include/xlocale.h && \
+    echo 'Pin setuptools version for numpy: https://numpy.org/devdocs/reference/distutils_status_migration.html' && \
+    pip install --disable-pip-version-check --no-build-isolation 'setuptools<60.0' && \
     pip install --disable-pip-version-check --no-build-isolation cython && \
     pip install --disable-pip-version-check --no-build-isolation numpy && \
     pip install --disable-pip-version-check --no-build-isolation pandas && \
