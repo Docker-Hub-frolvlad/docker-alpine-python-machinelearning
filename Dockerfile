@@ -2,7 +2,7 @@ FROM frolvlad/alpine-python3
 
 RUN apk add --no-cache \
         --virtual=.build-dependencies \
-        g++ gfortran file binutils \
+        ninja g++ gfortran file binutils \
         musl-dev python3-dev openblas-dev lapack-dev && \
     apk add libstdc++ openblas lapack && \
     \
