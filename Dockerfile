@@ -4,7 +4,7 @@ RUN apk add --no-cache \
         --virtual=.build-dependencies \
         ninja g++ gfortran file binutils \
         musl-dev python3-dev openblas-dev lapack-dev && \
-    apk add libstdc++ openblas lapack && \
+    apk add libstdc++ openblas && \
     \
     ln -s locale.h /usr/include/xlocale.h && \
     echo 'Pin setuptools version for numpy: https://numpy.org/devdocs/reference/distutils_status_migration.html' && \
@@ -30,7 +30,7 @@ RUN cd /tmp && \
     apk add --no-cache \
         --virtual=.build-dependencies \
         gcc make file binutils \
-        musl-dev python3-dev cython gmp-dev suitesparse-dev openblas-dev && \
+        musl-dev python3-dev gmp-dev suitesparse-dev openblas-dev && \
     apk add gmp suitesparse && \
     \
     pip install --disable-pip-version-check --no-build-isolation pycddlib && \
