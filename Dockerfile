@@ -35,8 +35,8 @@ RUN cd /tmp && \
         musl-dev python3-dev gmp-dev suitesparse-dev openblas-dev && \
     apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         --virtual=.build-dependencies-edge \
-	libcdd-dev &&\
-    apk add --no-cache gmp suitesparse && \
+	cddlib-dev &&\
+    apk add --no-cache gmp suitesparse cddlib && \
     \
     pip install --disable-pip-version-check --no-build-isolation pycddlib && \
     \
