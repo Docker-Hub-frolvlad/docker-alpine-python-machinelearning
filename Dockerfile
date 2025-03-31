@@ -48,10 +48,10 @@ RUN cd /tmp && \
     make install-strip && \
     \
     cd /tmp && \  
-    wget https://github.com/cvxopt/cvxopt/archive/refs/tags/1.3.0.zip && \
-    unzip 1.3.0.zip && \
-    cd cvxopt-1.3.0 && \
-    env CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas CVXOPT_BUILD_GLPK=1 CFLAGS="-I/usr/include/suitesparse" python setup.py install && \
+    wget https://github.com/cvxopt/cvxopt/archive/refs/tags/1.3.2.zip && \
+    unzip 1.3.2.zip && \
+    cd cvxopt-1.3.2 && \
+    env CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas CVXOPT_BUILD_GLPK=1 CFLAGS="-I/usr/include/suitesparse/suitesparse" python setup.py install && \
     \
     rm -r /root/.cache && \
     find /usr/lib/python3.*/site-packages/ -name '*.so' -print -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \; && \
