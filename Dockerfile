@@ -16,6 +16,8 @@ RUN apk add --no-cache \
     pip install --disable-pip-version-check --no-build-isolation pybind11 && \
     pip install --disable-pip-version-check --no-build-isolation scipy && \
     pip install --disable-pip-version-check --no-build-isolation scikit-learn && \
+    echo 'Unpin setuptools version' && \
+    pip install --disable-pip-version-check --no-build-isolation --upgrade setuptools && \
     \
     rm -r /root/.cache && \
     find /usr/lib/python3.*/ -name 'tests' -exec rm -r '{}' + && \
