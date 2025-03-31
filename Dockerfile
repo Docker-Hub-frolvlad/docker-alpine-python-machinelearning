@@ -33,7 +33,10 @@ RUN cd /tmp && \
         --virtual=.build-dependencies \
         gcc make file binutils \
         musl-dev python3-dev gmp-dev suitesparse-dev openblas-dev && \
-    apk add gmp suitesparse && \
+    apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        --virtual=.build-dependencies-edge \
+	libcdd-dev &&\
+    apk add --no-cache gmp suitesparse && \
     \
     pip install --disable-pip-version-check --no-build-isolation pycddlib && \
     \
@@ -53,7 +56,7 @@ RUN cd /tmp && \
     rm -r /root/.cache && \
     find /usr/lib/python3.*/site-packages/ -name '*.so' -print -exec sh -c 'file "{}" | grep -q "not stripped" && strip -s "{}"' \; && \
     \
-    apk del .build-dependencies && \
+    apk del .build-dependencies .build-dependencies-edge && \
     rm -rf /tmp/*
 
 # Add opencv (cv2)
